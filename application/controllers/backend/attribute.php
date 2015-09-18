@@ -16,6 +16,7 @@ class Attribute extends MY_Controller {
     public function group(){
 		
 		$this->my_auth->allow($this->auth, 'backend/attribute/group');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		
 		
@@ -31,6 +32,7 @@ class Attribute extends MY_Controller {
 	public function add(){
         
 	    $this->my_auth->allow($this->auth, 'backend/attribute/add');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$data['seo']['title'] = 'Thêm thuộc tính';
 		$continue = $this->input->get('continue');
 		if($this->input->post('add')){
@@ -44,7 +46,7 @@ class Attribute extends MY_Controller {
                 $_post = $this->my_string->allow_post($_post,array('name'));
                 $_post['created'] = gmdate('Y-m-d H:i:s',time() + 7*3600);  
                 $_post['lang'] = $this->session->userdata('_lang'); 
-                $this->db->insert('attribute',$_post);
+                $this->db->insert('attribute_group',$_post);
                 $this->my_string->js_redirect('Thêm thuộc tính thành công!', !empty($continue)?base64_decode($continue):BASE_URL.'backend/attribute/group');
             }
             
@@ -62,6 +64,7 @@ class Attribute extends MY_Controller {
     
 	public function edit($id){
         $this->my_auth->allow($this->auth, 'backend/attribute/edit');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$attribute = $this->db->where(array('id' => $id))->from('attribute_group')->get()->row_array();
@@ -99,14 +102,15 @@ class Attribute extends MY_Controller {
 	
     public function del($id){
         $this->my_auth->allow($this->auth, 'backend/attribute/del');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$attribute = $this->db->where(array('id' => $id))->from('attribute_group')->get()->row_array();
 		if($attribute['lang'] != $this->session->userdata('_lang')) $this->my_string->js_redirect('Ngôn ngữ không phù hợp', BASE_URL.'backend/attribute/group');
 		if(!isset($attribute) && count($attribute) == 0) $this->my_string->php_redirect(BASE_URL.'backend/attribute/group');
 		
-		$this->db->delete('attribute',array('id' =>$id));
-		$this->my_string->js_redirect('Xóa nhóm thành viên thành công!',!empty($continue)?base64_decode($continue):BASE_URL.'backend/attribute/group');
+		$this->db->delete('attribute_group',array('id' =>$id));
+		$this->my_string->js_redirect('Xóa thuộc tính thành công!',!empty($continue)?base64_decode($continue):BASE_URL.'backend/attribute/group');
     }
 	
 	
@@ -126,6 +130,7 @@ class Attribute extends MY_Controller {
 	
 	public function item($page = 1){
 		$this->my_auth->allow($this->auth, 'backend/attribute/item');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		$_lang = $this->session->userdata('_lang');
 		$parentid = (int)$this->input->get('parentid');
@@ -150,6 +155,7 @@ class Attribute extends MY_Controller {
 	
 	public function additem(){
 		$this->my_auth->allow($this->auth, 'backend/attribute/additem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		$_lang = $this->session->userdata('_lang');
 		$temp = $this->db->select('id, name')->from('attribute_group')->where(array('lang' => $_lang))->get()->result_array();
@@ -193,6 +199,7 @@ class Attribute extends MY_Controller {
 	 
 	public function edititem($id){
         $this->my_auth->allow($this->auth, 'backend/attribute/edititem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$_lang = $this->session->userdata('_lang');
@@ -243,6 +250,7 @@ class Attribute extends MY_Controller {
 	
 	public function delitem($id){
         $this->my_auth->allow($this->auth, 'backend/attribute/delitem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$item = $this->db->where(array('id' => $id))->from('attribute_item')->get()->row_array();

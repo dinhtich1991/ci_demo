@@ -29,6 +29,12 @@
 						<li class="item"><a class="item" href="backend/adv/index" title="Quảng cáo">Quảng cáo</a></li>
 						<li class="item"><a class="item" href="backend/tag/index" title="Từ khóa">Từ khóa</a></li>
 						<li class="item"><a class="item" href="backend/partner/index" title="Từ khóa">Đối tác</a></li>
+						<li class="item"><a class="item" href="backend/store/index" title="Từ khóa">Hệ thống store</a>
+							<ul class="sub">
+								<li class="sub"><a class="" href="backend/store/index">Hệ thống</a></li>
+								<li class="sub"><a class="" href="backend/store/item">Chi tiết</a></li>
+							</ul>
+						</li>
 						<li class="item"><a class="item" href="#">Hỗ trợ trực tuyến</a></li>
 						<li class="item"><a class="item" href="#">Phản hồi</a></li>
 					</ul>

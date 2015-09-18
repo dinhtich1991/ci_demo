@@ -13,6 +13,7 @@ class Article extends MY_Controller {
     
     public function category(){
 		$this->my_auth->allow($this->auth, 'backend/article/category');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		//print_r($this->_config);
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -41,6 +42,7 @@ class Article extends MY_Controller {
 	
 	 public function addcategory(){
 		$this->my_auth->allow($this->auth, 'backend/article/category');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$this->my_nestedset->check_empty('article_category');
 
 		
@@ -88,6 +90,7 @@ class Article extends MY_Controller {
 	 }
 	public function editcategory($id){
         $this->my_auth->allow($this->auth, 'backend/article/editcategory');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$category = $this->db->where(array('id' => $id))->from('article_category')->get()->row_array();
 		if(!isset($category) && count($category) == 0) $this->my_string->php_redirect(BASE_URL.'backend/article/category');
@@ -137,6 +140,7 @@ class Article extends MY_Controller {
     
 	public function delcategory($id){
         $this->my_auth->allow($this->auth, 'backend/article/delcategory');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$category = $this->db->where(array('id' => $id))->from('article_category')->get()->row_array();
 		if($category['lang'] != $this->session->userdata('_lang')) $this->my_string->js_redirect('Ngôn ngữ không phù hợp', BASE_URL.'backend/article/category');
@@ -172,6 +176,7 @@ class Article extends MY_Controller {
 	public function item($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/article/item');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -278,6 +283,7 @@ class Article extends MY_Controller {
 	
 	public function additem(){
 		$this->my_auth->allow($this->auth, 'backend/article/additem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		$_lang = $this->session->userdata('_lang');
 		$attribute = $this->db->select('id, name')->from('attribute_group')->where(array('lang' => $_lang))->get()->result_array();
@@ -301,7 +307,7 @@ class Article extends MY_Controller {
 			}
 			//echo $_post['attribute_id']; die;
 			if($this->form_validation->run() == TRUE){
-                $_post = $this->my_string->allow_post($_post,array('title','tags','parentid','attribute_id','attribute_item_id','image','description','sale','hot','route','price','price_sale','content','publish','highlight','timer','source','meta_title','meta_keyword','meta_description'));
+                $_post = $this->my_string->allow_post($_post,array('title','tags','parentid','attribute_id','attribute_item_id','image','images','description','sale','hot','route','price','price_sale','content','publish','highlight','timer','source','meta_title','meta_keyword','meta_description'));
                 $_post['timer'] = !empty( $_post['timer'])?gmdate('Y-m-d H:i:s',strtotime(str_replace('/','-',$_post['timer'])) + 7*3600):'';  
 				$_post['created'] = gmdate('Y-m-d H:i:s',time() + 7*3600);  
                 $_post['userid_created'] = $this->auth['id'];  
@@ -345,10 +351,16 @@ class Article extends MY_Controller {
 	 
 	public function edititem($id){
         $this->my_auth->allow($this->auth, 'backend/article/edititem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
+		$_lang = $this->session->userdata('_lang');
+		$attribute = $this->db->select('id, name')->from('attribute_group')->where(array('lang' => $_lang))->get()->result_array();
 		$continue = $this->input->get('continue');
 		$item = $this->db->where(array('id' => $id))->from('article_item')->get()->row_array();
-		if($item['lang'] != $this->session->userdata('_lang')) $this->my_string->js_redirect('Ngôn ngữ không phù hợp', !empty($continue)?base64_decode($continue):BASE_URL.'backend/article/item');
+		
+		//print_r($att); die;
+		
+		//if($item['lang'] != $this->session->userdata('_lang')) $this->my_string->js_redirect('Ngôn ngữ không phù hợp', !empty($continue)?base64_decode($continue):BASE_URL.'backend/article/item');
 		if(!isset($item) && count($item) == 0) $this->my_string->php_redirect(BASE_URL.'backend/article/item');
 		$_post = $item;
 		//echo $item['userid_created']; die;
@@ -357,12 +369,16 @@ class Article extends MY_Controller {
 		if($this->auth['group_allow'] == 1 && count($this->auth['group_content'])  && in_array('backend/article/edititem/self', $this->auth['group_content']) == TRUE && $this->auth['id'] != $item['userid_created']) $this->my_string->js_redirect('Không được sửa bài của người khác', !empty($continue)?base64_decode($continue):BASE_URL.'backend/article/item');
 		
 		
-		$data['seo']['title'] = 'Sửa bài viết';
+		$data['seo']['title'] = 'Sửa sản phẩm';
 		$data['data']['auth'] = $this->auth;
 		if($this->input->post('edit')){
             
             $_post = $this->input->post('data');
             $data['data']['_post'] = $_post;
+			$_post['attribute_id'] = '';
+			for($a = 0; $a<10; $a++){
+				$_post['attribute_id'] = $_post['attribute_id'].(isset($_post['thuoctinh'.$a.''])?($_post['thuoctinh'.$a.''].','):'');
+			}
 			$this->form_validation->set_error_delimiters('<li>','</li>');
             
             $this->form_validation->set_rules('data[title]','Tiêu đề','trim|required');
@@ -373,7 +389,7 @@ class Article extends MY_Controller {
 			}
            if($this->form_validation->run() == TRUE){
 			  
-                $_post = $this->my_string->allow_post($_post,array('title','parentid','tags','route','image','description','content','publish','highlight','meta_title','meta_keyword','meta_description'));
+                $_post = $this->my_string->allow_post($_post,array('title','tags','parentid','attribute_id','attribute_item_id','image','images','description','sale','hot','route','price','price_sale','content','publish','highlight','timer','source','meta_title','meta_keyword','meta_description'));
                 //$_post['timer'] = gmdate('Y-m-d H:i:s',strtotime(str_replace('/','-',$_post['timer'])) + 7*3600); 
                 $_post['updated'] = gmdate('Y-m-d H:i:s',time() + 7*3600);  
                 $_post['userid_updated'] = $this->auth['id'];  
@@ -381,9 +397,9 @@ class Article extends MY_Controller {
 				$_post['alias'] = $this->my_string->alias($_post['title']); 
 				$this->db->where(array('id' =>$id))->update('article_item',$_post);
                 $this->my_tags->insert_list($_post['tags']);
-				$this->my_route->update('article/item/'.$id, $_post['route']);
+				
 				 
-				$this->my_string->js_redirect('Sửa bài viết thành công!',!empty($continue)?base64_decode($continue):BASE_URL.'backend/article/item');
+				$this->my_string->js_redirect('Sửa sản phẩm thành công!',!empty($continue)?base64_decode($continue):BASE_URL.'backend/article/item');
             }
             
         }
@@ -392,7 +408,7 @@ class Article extends MY_Controller {
 			$item['tags'] = !empty($item['tags'])?str_replace(',',', ',substr(substr($item['tags'],1),0,-1)):'';
 			$data['data']['_post'] = $item;
 		}
-	 
+		$data['data']['attribute'] = $attribute;
 	   $data['data']['_show']['parentid'] = $this->my_nestedset->dropdown('article_category', NULL, 'item');
 	   $data['template'] = 'backend/article/edititem';
 	   $this->load->view('backend/layout/home',$data);
@@ -401,6 +417,7 @@ class Article extends MY_Controller {
 	
 	public function delitem($id){
         $this->my_auth->allow($this->auth, 'backend/article/delitem');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$item = $this->db->where(array('id' => $id))->from('article_item')->get()->row_array();

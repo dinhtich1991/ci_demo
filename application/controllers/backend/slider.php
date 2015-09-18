@@ -13,6 +13,7 @@ class slider extends MY_Controller {
     public function index($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/slider/index');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		
 		
@@ -36,6 +37,7 @@ class slider extends MY_Controller {
 	public function add(){
         
 	    $this->my_auth->allow($this->auth, 'backend/slider/add');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$data['seo']['title'] = 'Thêm slider';
 		$data['data']['auth'] = $this->auth;
 		$continue = $this->input->get('continue');
@@ -69,6 +71,7 @@ class slider extends MY_Controller {
     
 	public function edit($id){
         $this->my_auth->allow($this->auth, 'backend/slider/edit');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$slider = $this->db->where(array('id' => $id))->from('slider')->get()->row_array();
 		if(!isset($slider) && count($slider) == 0) $this->my_string->php_redirect(BASE_URL.'backend/slider/index');
@@ -106,6 +109,7 @@ class slider extends MY_Controller {
 	
     public function del($id){
         $this->my_auth->allow($this->auth, 'backend/slider/del');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$slider = $this->db->where(array('id' => $id))->from('slider')->get()->row_array();

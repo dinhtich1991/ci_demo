@@ -107,6 +107,7 @@
                 <div class="col-sm-9 col-xs-12">
 				<?php
 					if(isset($_category) && !empty($_category)){
+						
 						?>
 						<h3 class="title-page"><?php echo $_category['description']; ?></h3>
 
@@ -142,9 +143,11 @@
 						<div class="row">
 						<?php
 						if(isset($_list) && !empty($_list)){
+							
 							foreach($_list as $k => $v){
-								
-									?>
+								$temp = explode(',',$v['image']);
+								//print_r($temp); die;
+								?>
 									<div class="col-sm-3 col-xs-12">
 										<div class="box">
 										<?php
@@ -159,8 +162,8 @@
 											}
 										?>
 											<div class="img">
-												<a href="">
-													<img src="<?php echo $v['image']; ?>" />
+												<a href="frontend/article/item/<?php echo $v['id']; ?>">
+													<img src="<?php echo isset($temp)?$temp[0]:$v['image'];?>" />
 												</a>
 											</div>
 											<div class="code">Mã: <?php echo $v['title']; ?></div>
@@ -174,7 +177,7 @@
 										</div>
 									</div>
 									<?php
-								
+								$temp = $v['image'];
 							}
 						}
 						?>

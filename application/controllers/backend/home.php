@@ -11,6 +11,7 @@ class Home extends MY_Controller {
 	public function index($lang = 'vi'){
 		$this->my_frontend->lang($lang);
 		if($this->auth == NULL) $this->my_string->php_redirect(BASE_URL.'backend/auth/login');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$data['data']['auth'] = $this->auth;
 		$data['template'] = 'backend/home/index';
 		$this->load->view('backend/layout/home',isset($data)?$data:NULL);

@@ -14,6 +14,7 @@ class Config extends MY_Controller {
     
     public function index($group = 'frontend'){
         $this->my_auth->allow($this->auth, 'backend/config/index');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         if(!isset($group) || empty($group))
 			$this->my_string->php_redirect(BASE_URL.'backend/home/index');
 		$_lang = $this->session->userdata('_lang');

@@ -91,7 +91,7 @@ class CI_Cart {
 			log_message('error', 'The insert method must be passed an array containing data.');
 			return FALSE;
 		}
-
+		
 		// You can either insert a single product using a one-dimensional array,
 		// or multiple products using a multi-dimensional one. The way we
 		// determine the array type is by looking for a required array key named "id"
@@ -522,7 +522,7 @@ class CI_Cart {
 		// Remove anything that isn't a number or decimal point.
 		$n = trim(preg_replace('/([^0-9\.])/i', '', $n));
 
-		return number_format($n, 2, '.', ',');
+		return number_format($n, 0, '.', ',');
 	}
 
 	// --------------------------------------------------------------------

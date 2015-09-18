@@ -81,6 +81,8 @@ if ( ! function_exists('get_attribute_item'))
 	}
 }
 
+
+
 if ( ! function_exists('get_count_post'))
 {
 	function get_count_post($table, $param){

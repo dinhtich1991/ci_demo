@@ -1,4 +1,10 @@
+
 /* HEADER */
+
+ul.error li{
+	color: red;
+	padding-left: 200px;
+}
 nav ul.main li.main{
 	position: relative;
 }

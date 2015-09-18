@@ -13,7 +13,7 @@ class User extends MY_Controller {
     public function group($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/user/group');
-       
+       if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
 			if(isset($_order) && count($_order)){
@@ -69,7 +69,7 @@ class User extends MY_Controller {
     }
 	
 	public function addgroup(){
-        
+        if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 	    $this->my_auth->allow($this->auth, 'backend/user/addgroup');
 		$data['seo']['title'] = 'Thêm nhóm thành viên';
 		$data['data']['auth'] = $this->auth;
@@ -102,6 +102,7 @@ class User extends MY_Controller {
     
 	public function editgroup($id){
         $this->my_auth->allow($this->auth, 'backend/user/editgroup');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$group = $this->db->where(array('id' => $id))->from('user_group')->get()->row_array();
 		if(!isset($group) && count($group) == 0) $this->my_string->php_redirect(BASE_URL.'backend/home/index');
@@ -136,6 +137,7 @@ class User extends MY_Controller {
 	
     public function delgroup($id){
         $this->my_auth->allow($this->auth, 'backend/user/delgroup');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$group = $this->db->where(array('id' => $id))->from('user_group')->get()->row_array();
 		if(!isset($group) && count($group) == 0) $this->my_string->php_redirect(BASE_URL.'backend/home/index');
@@ -151,7 +153,7 @@ class User extends MY_Controller {
 		
 		$this->my_auth->allow($this->auth, 'backend/user/index');
 		$continue = $this->input->get('continue');
-		
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		
 		$sort = $this->my_common->sort_orderby($this->input->get('sort_field'),$this->input->get('sort_value'));
 		
@@ -233,7 +235,7 @@ class User extends MY_Controller {
     }
 	
 	public function add(){
-        
+        if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 	    $this->my_auth->allow($this->auth, 'backend/user/add');
 		$data['seo']['title'] = 'Thêm thành viên';
 		$data['data']['auth'] = $this->auth;
@@ -292,6 +294,7 @@ class User extends MY_Controller {
 	 }
 	 
 	public function edit($id){
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         $this->my_auth->allow($this->auth, 'backend/user/edit');
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
@@ -334,6 +337,7 @@ class User extends MY_Controller {
     }
 	
 	public function del($id){
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         $this->my_auth->allow($this->auth, 'backend/user/del');
 		$id = (int)$id;
 		$count = $this->db->where(array('userid_created' => $id))->from('article_item')->count_all_results();

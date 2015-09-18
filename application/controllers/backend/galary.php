@@ -15,6 +15,7 @@ class Galary extends MY_Controller {
     
     public function bst(){
 		$this->my_auth->allow($this->auth, 'backend/galary/bst');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		//print_r($this->_config);
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -43,6 +44,7 @@ class Galary extends MY_Controller {
 	
 	 public function addbst(){
 		$this->my_auth->allow($this->auth, 'backend/galary/bst');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$this->my_nestedset_galary->check_empty('galary_bst');
 
 		
@@ -90,6 +92,7 @@ class Galary extends MY_Controller {
 	 }
 	public function editbst($id){
         $this->my_auth->allow($this->auth, 'backend/galary/editbst');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$bst = $this->db->where(array('id' => $id))->from('galary_bst')->get()->row_array();
 		if(!isset($bst) && count($bst) == 0) $this->my_string->php_redirect(BASE_URL.'backend/galary/bst');
@@ -139,6 +142,7 @@ class Galary extends MY_Controller {
     
 	public function delbst($id){
         $this->my_auth->allow($this->auth, 'backend/galary/delbst');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$bst = $this->db->where(array('id' => $id))->from('galary_bst')->get()->row_array();
 		if($bst['lang'] != $this->session->userdata('_lang')) $this->my_string->js_redirect('Ngôn ngữ không phù hợp', BASE_URL.'backend/galary/bst');
@@ -174,6 +178,7 @@ class Galary extends MY_Controller {
 	public function bstdetail($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/galary/bstdetail');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -280,6 +285,7 @@ class Galary extends MY_Controller {
 	
 	public function addbstdetail(){
 		$this->my_auth->allow($this->auth, 'backend/galary/addbstdetail');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		$data['seo']['title'] = 'Thêm bài viết';
 		$data['data']['auth'] = $this->auth;
@@ -347,6 +353,7 @@ class Galary extends MY_Controller {
 	 
 	public function editbstdetail($id){
         $this->my_auth->allow($this->auth, 'backend/galary/editbstdetail');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$bstdetail = $this->db->where(array('id' => $id))->from('galary_bstdetail')->get()->row_array();
@@ -414,6 +421,7 @@ class Galary extends MY_Controller {
 	
 	public function delbstdetail($id){
         $this->my_auth->allow($this->auth, 'backend/galary/delbstdetail');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$bstdetail = $this->db->where(array('id' => $id))->from('galary_bstdetail')->get()->row_array();

@@ -13,6 +13,7 @@ class Adv extends MY_Controller {
     public function index($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/adv/index');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -74,6 +75,7 @@ class Adv extends MY_Controller {
 	public function add(){
         
 	    $this->my_auth->allow($this->auth, 'backend/adv/add');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$data['seo']['title'] = 'Thêm quảng cáo';
 		$data['data']['auth'] = $this->auth;
 		$continue = $this->input->get('continue');
@@ -115,6 +117,7 @@ class Adv extends MY_Controller {
     
 	public function edit($id){
         $this->my_auth->allow($this->auth, 'backend/adv/edit');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$adv = $this->db->where(array('id' => $id))->from('adv')->get()->row_array();
@@ -163,6 +166,7 @@ class Adv extends MY_Controller {
 	
     public function del($id){
         $this->my_auth->allow($this->auth, 'backend/adv/del');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$adv = $this->db->where(array('id' => $id))->from('adv')->get()->row_array();

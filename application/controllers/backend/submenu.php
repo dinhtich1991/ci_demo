@@ -11,7 +11,7 @@ class Submenu extends MY_Controller {
 	}
     
     public function index($page = 1){
-		
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$this->my_auth->allow($this->auth, 'backend/submenu/index');
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
@@ -72,7 +72,7 @@ class Submenu extends MY_Controller {
     }
 	
 	public function add(){
-        
+        if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 	    $this->my_auth->allow($this->auth, 'backend/submenu/add');
 		$data['seo']['title'] = 'Thêm Menu phụ';
 		$data['data']['auth'] = $this->auth;
@@ -108,6 +108,7 @@ class Submenu extends MY_Controller {
     
 	public function edit($id){
         $this->my_auth->allow($this->auth, 'backend/submenu/edit');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$submenu = $this->db->where(array('id' => $id))->from('submenu')->get()->row_array();
@@ -147,6 +148,7 @@ class Submenu extends MY_Controller {
 	
     public function del($id){
         $this->my_auth->allow($this->auth, 'backend/submenu/del');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$submenu = $this->db->where(array('id' => $id))->from('submenu')->get()->row_array();

@@ -4,6 +4,7 @@ class Subarticle extends MY_Controller {
 
 	 public function __construct(){
 		parent::__construct();
+		$this->auth = $this->my_auth->check();
 	}
     
 	public function category($catid = 0, $page = 1){
@@ -67,7 +68,7 @@ class Subarticle extends MY_Controller {
 		$data['data']['_breadcrumb'] = $config;
 		$data['data']['_category'] = $category;
 		$data['data']['_author'] = $author;
-		
+		$data['data']['user'] = $this->auth;
 		// Tạo link prev-next cho SEO
 		$data['data']['_children'] = ($category['rgt'] - $category['lft'] > 1)?$this->db->select('id, title, route, alias')->from('article_category')->where(array('parentid' => $catid, 'publish' => 1))->get()->result_array():NULL;
 		if($page == 2) $data['seo']['rel_prev'] = $config['first_url'];
@@ -121,7 +122,7 @@ class Subarticle extends MY_Controller {
 		$data['data']['_item'] = $item;
 		$data['data']['_category'] = $category;
 		$data['data']['_author'] = $author;
-		
+		$data['data']['user'] = $this->auth;
 		// Tạo link prev-next cho SEO
 		$data['data']['_children'] = ($category['rgt'] - $category['lft'] > 1)?$this->db->select('id, title, route, alias')->from('article_category')->where(array('parentid' => $item['parentid'], 'publish' => 1))->get()->result_array():NULL;
 		

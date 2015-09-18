@@ -4,7 +4,7 @@ class Galary extends MY_Controller {
 
 	 public function __construct(){
 		parent::__construct();
-		$this->user = $this->my_frontend_auth->check();
+		$this->auth = $this->my_auth->check();
 	}
     
 	public function bst($catid = 2, $page = 1){
@@ -78,7 +78,7 @@ class Galary extends MY_Controller {
 		if($page == 2) $data['seo']['rel_prev'] = $config['first_url'];
 		else if($page > 2) $data['seo']['rel_prev'] = $config['base_url'].($page - 1).TT_URL_SUFFIX;
 		if($page < $_totalpage) $data['seo']['rel_next'] = $config['base_url'].($page + 1).TT_URL_SUFFIX;
-		$data['data']['user'] = $this->user;
+		$data['data']['user'] = $this->auth;
 		$data['template'] = 'frontend/galary/bst';
 		$this->load->view('frontend/layout/home',$data);
 	}
@@ -151,7 +151,7 @@ class Galary extends MY_Controller {
 		
 		// Tạo link prev-next cho SEO
 		$data['data']['_children'] = ($bst['rgt'] - $bst['lft'] > 1)?$this->db->select('id, title, route, alias')->from('galary_bst')->where(array('parentid' => $item['parentid'], 'publish' => 1))->get()->result_array():NULL;
-		$data['data']['user'] = $this->user;
+		$data['data']['user'] = $this->auth;
 		$data['template'] = 'frontend/galary/bstdetail';
 		$this->load->view('frontend/layout/home',$data);
 	}

@@ -8,3 +8,5 @@ $route['be-gai'] = 'frontend/article/category/7';
 $route['bo-suu-tap/trang-(\d+)'] = 'frontend/galary/bst/2/$1';
 $route['bo-suu-tap'] = 'frontend/galary/bst/2';
 $route['o-to'] = 'frontend/article/item/9';
+$route['nam/trang-(\d+)'] = 'frontend/article/category/2/$1';
+$route['nam'] = 'frontend/article/category/2';

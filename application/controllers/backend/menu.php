@@ -11,7 +11,7 @@ class Menu extends MY_Controller {
 	}
     
     public function index($page = 1){
-		
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$this->my_auth->allow($this->auth, 'backend/menu/index');
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
@@ -72,7 +72,7 @@ class Menu extends MY_Controller {
     }
 	
 	public function add(){
-        
+        if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 	    $this->my_auth->allow($this->auth, 'backend/menu/add');
 		$data['seo']['title'] = 'Thêm quảng cáo';
 		$data['data']['auth'] = $this->auth;
@@ -107,6 +107,7 @@ class Menu extends MY_Controller {
     }
     
 	public function edit($id){
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         $this->my_auth->allow($this->auth, 'backend/menu/edit');
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
@@ -146,6 +147,7 @@ class Menu extends MY_Controller {
     }
 	
     public function del($id){
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         $this->my_auth->allow($this->auth, 'backend/menu/del');
 		$id = (int)$id;
 		$continue = $this->input->get('continue');

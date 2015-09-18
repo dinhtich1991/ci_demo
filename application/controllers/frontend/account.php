@@ -4,10 +4,11 @@ class Account extends MY_Controller {
 
 	 public function __construct(){
 		parent::__construct();
+		$this->auth = $this->my_auth->check();
 	}
     
 	public function register(){
-		
+		if($this->auth != NULL) $this->my_string->php_redirect(BASE_URL);
 		$_lang = $this->session->userdata('_lang');
 		$_city = $this->db->select('id, tentinhthanh')->from('tinhthanh')->get()->result_array();
 		if($this->input->post('add')){
@@ -20,9 +21,11 @@ class Account extends MY_Controller {
             $this->form_validation->set_rules('data[password]','Mật Khẩu','trim|required');
             $this->form_validation->set_rules('data[repassword]','Xác nhận mật khẩu','trim|required|matches[data[password]]');
 			$this->form_validation->set_rules('data[address]','Địa chỉ','trim|required');
+			$this->form_validation->set_rules('data[city]','Thành phố','trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('data[phone]','Điện thoại','trim|required');
 			
             $data['data']['_post'] = $_post;
+			/*
 			if(isset($_post['quanhuyen']) && count($_post['quanhuyen']) && isset($_post['tinhthanh']) &&count($_post['tinhthanh'])){
 				$temp1 = $_post['tinhthanh'];
 				$quanhuyen = $_post['quanhuyen'];
@@ -31,10 +34,16 @@ class Account extends MY_Controller {
 					$tinhthanh = $temp;
 				$_post['address'] = $_post['address'].', '.$quanhuyen.', '.$tinhthanh;
 				//echo $_post['address']; die;
+				
 			}	
-			
+			*/
+			if(isset($_post['city']) && !empty($_post['city'])){
+				$temp3 = $this->my_frontend->get_name_city($_post['city']);
+				foreach($temp3 as $temp)
+					$$_post['city'] = $temp;
+			}
 			if($this->form_validation->run() == TRUE){
-                $_post = $this->my_string->allow_post($_post,array('username','fullname','email','content','password','address','phone'));
+                $_post = $this->my_string->allow_post($_post,array('username','fullname','email','content','password','address','city','district','phone'));
 				$_post['salt'] =  $this->my_string->random(69,TRUE);
 				$_post['password'] =  $this->my_string->encryption_password($_post['username'], $_post['password'],$_post['salt']);
 				$_post['created'] = gmdate('Y-m-d H:i:s',time() + 7*3600);  
@@ -53,7 +62,7 @@ class Account extends MY_Controller {
     public function loadcity(){
 		$temp = $_REQUEST['city'];
 		$district = $this->db->select('id, tenquanhuyen')->from('quanhuyen')->where(array('matinhthanh' => $temp))->get()->result_array();
-		$str = '<select class="form-control" name="data[quanhuyen]">';
+		$str = '<select class="form-control" name="data[district]">';
 		foreach($district as $key => $val){
 			$str = $str.'<option value="'.$val['tenquanhuyen'].'">'.$val['tenquanhuyen'].'</option>';
 		}

@@ -12,6 +12,7 @@ class Account extends MY_Controller {
     
     public function info(){
         $this->my_auth->allow($this->auth, 'backend/account/info');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         if($this->auth == NULL) 
             $this->my_string->php_redirect(BASE_URL.'backend/home/index');
       

@@ -20,6 +20,7 @@ class Auth extends MY_Controller {
         
         if($this->auth != NULL) 
             $this->my_string->php_redirect(BASE_URL.'backend/home/index');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
         $data['seo']['title'] = 'Đăng Nhập Hệ Thống';
         if($this->input->post('login')){
             

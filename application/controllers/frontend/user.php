@@ -4,10 +4,11 @@ class User extends MY_Controller {
 
 	 public function __construct(){
 		parent::__construct();
-		$this->user = $this->my_frontend_auth->check();
+		$this->auth = $this->my_auth->check();
 	}
     
 	public function login(){
+		if($this->auth != NULL) $this->my_string->php_redirect(BASE_URL);
 		if(isset($_REQUEST['email']) && isset($_REQUEST['pass'])){
 			$_username = $_REQUEST['email'];
 			$_password = $_REQUEST['pass']; 
@@ -17,8 +18,9 @@ class User extends MY_Controller {
 					$password = $this->my_string->encryption_password($user['username'], $_password, $user['salt']);
 				}
 				if($password == $user['password']){
-					$this->session->set_userdata('user', json_encode($user));
-					$temp = $this->session->userdata('user');
+					$this->session->set_userdata('auth', json_encode($user));
+					//$temp = $this->session->userdata('user');
+					//print_r($temp); die;
 					$this->my_string->js_redirect('Đăng nhập thành công!',BASE_URL);
 				}
 				else{
@@ -33,13 +35,23 @@ class User extends MY_Controller {
 	
 		
 	}
+	
+	public function loginfb(){
+		$temp = $_REQUEST;
+		$this->session->set_userdata('data[user_face]', $temp);
+		$this->my_string->php_redirect(BASE_URL);
+	}
+	
 	public function logout(){
 		$this->session->sess_destroy();
+		$this->load->library('facebook');
+		// Logs off session from website
+        $this->facebook->destroySession();
 		setcookie(TT_PREFIX.'_user_logged', NULL,time() - 3600,'/'); 
         $this->my_string->php_redirect(BASE_URL);
 	}
 	public function forgot(){
-		if($this->user != NULL) $this->my_string->php_redirect(BASE_URL);
+		if($this->auth != NULL) $this->my_string->php_redirect(BASE_URL);
         $data['seo']['title'] = 'Quên mật khẩu';
 		
 		if($this->input->post('forgot'))
@@ -91,7 +103,7 @@ class User extends MY_Controller {
 	
 	public function reset(){
 
-        if($this->user != NULL) $this->my_string->js_redirect('Tài khoản của bạn đã đăng nhập!',BASE_URL);
+        if($this->auth != NULL) $this->my_string->js_redirect('Tài khoản của bạn đã đăng nhập!',BASE_URL);
         
 
         $data['seo']['title'] = 'Reset thông tin tài khoản';
@@ -131,11 +143,11 @@ class User extends MY_Controller {
     }
 	
 	public function info(){
-        if($this->user == NULL) 
+        if($this->auth == NULL) 
             $this->my_string->php_redirect(BASE_URL);
       
 		
-		$user = $this->db->where(array('username' => $this->user['username']))->from('user')->get()->row_array();
+		$user = $this->db->where(array('username' => $this->auth['username']))->from('user')->get()->row_array();
 		if(!isset($user) || count($user) == 0)$this->my_string->php_redirect(BASE_URL);
 	   
 	   $data['seo']['title'] = 'Thay đổi thông tin tài khoản';
@@ -157,48 +169,48 @@ class User extends MY_Controller {
             }
         }
 		$data['data']['_post'] = $_post;
-		$data['data']['user'] = $this->user;
+		$data['data']['user'] = $this->auth;
 	   $data['template'] = 'frontend/account/info';
 	   $this->load->view('frontend/layout/home',$data);
         
     }
 	public function changefullname(){
 		$temp = $_REQUEST['name'];
-		$user = $this->user;
+		$user = $this->auth;
 		if(isset($temp) && !empty($temp)){
 			$this->db->where(array('username' =>$user['username']))->update('user',array('fullname' => $temp));
 		}
-		$post = $this->db->select('fullname')->from('user')->where(array('username' => $this->user))->get()->row_array();
+		$post = $this->db->select('fullname')->from('user')->where(array('username' => $this->auth))->get()->row_array();
 		echo $post['fullname'];
 		
 	}
 	public function changeemail(){
 		$temp = $_REQUEST['email'];
-		$user = $this->user;
+		$user = $this->auth;
 		if(isset($temp) && !empty($temp)){
 			$this->db->where(array('username' =>$user['username']))->update('user',array('email' => $temp));
 		}
-		$post = $this->db->select('email')->from('user')->where(array('username' => $this->user))->get()->row_array();
+		$post = $this->db->select('email')->from('user')->where(array('username' => $this->auth))->get()->row_array();
 		echo $post['email'];
 		
 	}
 	public function changesex(){
 		$temp = $_REQUEST['sex'];
-		$user = $this->user;
+		$user = $this->auth;
 		if(isset($temp) && !empty($temp)){
 			$this->db->where(array('username' =>$user['username']))->update('user',array('sex' => $temp));
 		}
-		$post = $this->db->select('sex')->from('user')->where(array('username' => $this->user))->get()->row_array();
+		$post = $this->db->select('sex')->from('user')->where(array('username' => $this->auth))->get()->row_array();
 		echo $post['sex'];
 		
 	}
 	public function changebirth(){
 		$temp = $_REQUEST['birth'];
-		$user = $this->user;
+		$user = $this->auth;
 		if(isset($temp) && !empty($temp)){
 			$this->db->where(array('username' =>$user['username']))->update('user',array('sex' => $temp));
 		}
-		$post = $this->db->select('sex')->from('user')->where(array('username' => $this->user))->get()->row_array();
+		$post = $this->db->select('sex')->from('user')->where(array('username' => $this->auth))->get()->row_array();
 		echo $post['sex'];
 		
 	}
@@ -225,7 +237,7 @@ class User extends MY_Controller {
 			return FALSE;
 		}
 		if(isset($_passold) && isset($_passnew) && isset($_passrenew)){
-			$user = $this->db->where(array('username' => $this->user['username']))->from('user')->get()->row_array();
+			$user = $this->db->where(array('username' => $this->auth['username']))->from('user')->get()->row_array();
 			$oldpassword = $this->my_string->encryption_password($user['username'],$_passold, $user['salt']);
 			if($user['password'] != $oldpassword){
 				echo 'Mật khẩu cũ không đúng!';

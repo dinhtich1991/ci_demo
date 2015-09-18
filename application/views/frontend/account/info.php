@@ -4,9 +4,9 @@
             <div class="wrapper">
                 <aside>
                     <div id="user-info">
-                        <img src="public/template/frontend/images/img02.png" />
-                        <div>Nguyễn Trang Phương</div>
-                    </div>
+						<img src="public/template/frontend/images/img02.png" />
+						<div>Nguyễn Trang Phương</div>
+					 </div>
                     <ul>
                         <li>
                             <h5><a href="">QUẢN LÝ ĐƠN HÀNG</a></h5>
@@ -73,6 +73,19 @@
 									<div class="form-group" id="hide_birth" style="display: none;">
                                         <label class="col-sm-6" style="padding-left:50px; color:red;">Ngày sinh không được để trống </label>
                                     </div>
+									<div class="form-group">
+                                        <label for="" class="col-sm-2 control-label">Ảnh đại diện: </label>
+									<?php
+										echo form_open_multipart('frontend/upload/user');
+									?>
+										<div class="col-sm-4">
+											<input type="file" name="userfile" size="18" />
+										</div>
+										<div class="col-sm-2 text-right">
+											<input type="submit" value="upload" />
+										</div>
+										</form>
+									</div>
                                     <div class="form-group">
                                         <label for="" class="col-sm-2 control-label">Giới tính: </label>
                                         <div class="col-sm-4">

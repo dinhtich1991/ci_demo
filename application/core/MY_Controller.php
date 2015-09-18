@@ -8,9 +8,10 @@ class MY_Controller extends CI_Controller{
 		parent::__construct();
 		date_default_timezone_set('Asia/Saigon');
 		
+		//print_r($_SERVER); die;
+		
 		// Lang
 		$_lang = 'vi';
-		
 		//Config
 		$_data = $this->db->select('keyword, value_'.$_lang)->from('config')->where(array('publish' => 1))->get()->result_array();
 		

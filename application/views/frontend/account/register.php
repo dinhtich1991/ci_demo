@@ -61,7 +61,7 @@
                                 Tỉnh/ thành phố: <span class="font-red">*</span>
                             </label>
                             <div class="col-sm-3">
-                                <select class="form-control" name="data[tinhthanh]" onchange="loadcity(this.value)">
+                                <select class="form-control" name="data[city]" onchange="loadcity(this.value)">
 									<option>---</option>
 									<?php foreach($_city as $key => $val){ ?>
 									<option value="<?php echo $val['id'] ?>"><?php echo $val['tentinhthanh'] ?></option>

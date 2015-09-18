@@ -49,7 +49,8 @@ $route['([a-zA-Z0-9/-]+)-68(\d+)/trang-(\d+)$'] = 'frontend/article/category/$2/
 $route['([a-zA-Z0-9/-]+)-88(\d+)$'] = 'frontend/article/item/$2';
 
 // Trang co dinh
-$route['gioi-thieu'] = 'frontend/page/gioithieu';
+$route['gioi-thieu'] = 'frontend/intro/index';
+$route['dang-ky'] = 'frontend/account/register';
 //$route['bo-suu-tap'] = 'frontend/galary/bst';
 $route['bo-suu-tap/trang-(\d+)'] = 'frontend/galary/bstdetail/$1';
 

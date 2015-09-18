@@ -67,6 +67,11 @@
 							<input type="button" value="Chọn ảnh" class="btnButton" onclick="browseKCFinder('txtImage','image'); return FALSE;" />
 						</label>
 						<label class="item">
+							<p class="label">Ảnh galary:</p>
+							<input type="text" name="data[images]" value="<?php echo isset($_post['images'])?$_post['images']:''; ?>" class="txtText" id="txtImage2" />
+							<input type="button" value="Chọn ảnh" class="btnButton" onclick="browseKCFinder('txtImage2','image'); return FALSE;" />
+						</label>
+						<label class="item">
 							<p class="label">Mô tả:</p>
 							<textarea name="data[description]" class="txtTextarea mceEditor"><?php echo isset($_post['description'])?$_post['description']:''; ?></textarea>
 						</label>

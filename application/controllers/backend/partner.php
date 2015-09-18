@@ -13,6 +13,7 @@ class Partner extends MY_Controller {
     public function index($page = 1){
 		
 		$this->my_auth->allow($this->auth, 'backend/partner/index');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$continue = $this->input->get('continue');
 		if($this->input->post('sort')){
 			$_order = $this->input->post('order');
@@ -73,6 +74,7 @@ class Partner extends MY_Controller {
 	public function add(){
         
 	    $this->my_auth->allow($this->auth, 'backend/partner/add');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$data['seo']['title'] = 'Thêm đối tác';
 		$data['data']['auth'] = $this->auth;
 		$continue = $this->input->get('continue');
@@ -106,6 +108,7 @@ class Partner extends MY_Controller {
     
 	public function edit($id){
         $this->my_auth->allow($this->auth, 'backend/partner/edit');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$partner = $this->db->where(array('id' => $id))->from('partner')->get()->row_array();
@@ -144,6 +147,7 @@ class Partner extends MY_Controller {
 	
     public function del($id){
         $this->my_auth->allow($this->auth, 'backend/partner/del');
+		if($this->auth['group_id'] == 1) $this->my_string->php_redirect(BASE_URL);
 		$id = (int)$id;
 		$continue = $this->input->get('continue');
 		$partner = $this->db->where(array('id' => $id))->from('partner')->get()->row_array();

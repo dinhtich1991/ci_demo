@@ -1,6 +1,6 @@
 <?php
-	//define('BASE_URL', 'genviet.com');
-    define('BASE_URL', 'http://localhost/ci_24062015/');
+	define('BASE_URL', '/');
+    //define('BASE_URL', 'http://localhost/ci_24062015/');
     define('TT_PREFIX', md5(BASE_URL));
     define('VI', 'vi');
 	define('TT_DB_HOST', 'localhost');

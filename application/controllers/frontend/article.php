@@ -5,7 +5,7 @@ class Article extends MY_Controller {
 	 public function __construct(){
 		parent::__construct();
 		$this->load->helper('frontend_menuleft');
-		$this->user = $this->my_frontend_auth->check();
+		$this->auth = $this->my_auth->check();
 	}
     
 	public function category($catid = 0, $page = 1){
@@ -93,7 +93,7 @@ class Article extends MY_Controller {
 		if($page == 2) $data['seo']['rel_prev'] = $config['first_url'];
 		else if($page > 2) $data['seo']['rel_prev'] = $config['base_url'].($page - 1).TT_URL_SUFFIX;
 		if($page < $_totalpage) $data['seo']['rel_next'] = $config['base_url'].($page + 1).TT_URL_SUFFIX;
-		$data['data']['user'] = $this->user;
+		$data['data']['user'] = $this->auth;
 		$data['template'] = 'frontend/article/category';
 		$this->load->view('frontend/layout/home',$data);
 	}
@@ -110,7 +110,7 @@ class Article extends MY_Controller {
 		if(!isset($author) && count($author) == 0) $this->my_string->php_redirect(BASE_URL);
 		$this->my_frontend->lang($category['lang']);
 		$_lang = $this->session->userdata('_lang');
-		
+		$attribute = $this->db->select('id, name')->from('attribute_group')->where(array('lang' => $_lang))->get()->result_array();
 		if($this->input->post('comment')){
             
             $_post = $this->input->post('data');
@@ -139,9 +139,10 @@ class Article extends MY_Controller {
 		$fullurl = current(explode('?',$this->my_string->fullurl()));
 		//if($fullurl != $data['seo']['canonical']) $this->my_string->php_redirect($data['seo']['canonical']);
 		$data['data']['_item'] = $item;
+		$data['data']['attribute'] = $attribute;
 		$data['data']['_category'] = $category;
 		$data['data']['_author'] = $author;
-		$data['data']['user'] = $this->user;
+		$data['data']['user'] = $this->auth;
 		// Tạo link prev-next cho SEO
 		$data['data']['_children'] = ($category['rgt'] - $category['lft'] > 1)?$this->db->select('id, title, route, alias')->from('article_category')->where(array('parentid' => $item['parentid'], 'publish' => 1))->get()->result_array():NULL;
 		

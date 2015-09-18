@@ -21,6 +21,41 @@
 							<?php echo form_dropdown('data[parentid]', (isset($_show['parentid'])?$_show['parentid']:NULL),common_valuepost(isset($_post['parentid'])?$_post['parentid']:0), 'class="cbSelect"'); ?>
 						</label>
 						<label class="item">
+							<p class="label">Giá:</p>
+							<input type="text" name="data[price]" value="<?php echo isset($_post['price'])?$_post['price']:''; ?>" class="txtText">
+						</label>
+						<label class="item">
+							<p class="label">Số lượng:</p>
+							<input type="text" name="data[total]" value="<?php echo isset($_post['total'])?$_post['total']:''; ?>" class="txtText">
+						</label>
+						<section class="checkbox-radio">
+							<p class="label">Giảm giá:</p>
+							<section class="group">
+								<label>
+									<input type="radio" name="data[sale]" value="1" <?php echo isset($_post['sale'])?(($_post['sale'] == 1)?'checked ="checked"':''):''; ?> /><span>Có</span>
+								</label>
+								<label>
+									<input type="radio" name="data[sale]" value="0" <?php echo isset($_post['sale'])?(($_post['sale'] == 0)?'checked ="checked"':''):''; ?> /><span>Không</span>
+								</label>
+							</section>
+						</section>
+						<label class="item">
+							<p class="label">Giá giảm:</p>
+							<input type="text" name="data[price_sale]" value="<?php echo isset($_post['price_sale'])?$_post['price_sale']:''; ?>" class="txtText">
+						</label>
+						<?php 
+							$stt = 0;
+							foreach($attribute as $key => $val){
+								?>
+								<label class="item">
+									<p class="label"><?php echo $val['name'] ?></p>
+									<?php echo form_dropdown('data[thuoctinh'.$stt.']', get_attribute_item($val['id']),common_valuepost(isset($_post['parentid'])?$_post['parentid']:0), 'class="cbSelect"'); ?>
+								</label>
+								<?php
+								$stt ++;
+							}
+						?>
+						<label class="item">
 							<p class="label">Tags:</p>
 							<input type="text" name="data[tags]" value="<?php echo isset($_post['tags'])?$_post['tags']:''; ?>" class="txtText" id="txtTags">
 							<input type="button" value="Chọn" class="btnButton"  id="tag_suggest" />
@@ -30,6 +65,11 @@
 							<p class="label">Ảnh đại diện:</p>
 							<input type="text" name="data[image]" value="<?php echo isset($_post['image'])?$_post['image']:''; ?>" class="txtText" id="txtImage" />
 							<input type="button" value="Chọn ảnh" class="btnButton" onclick="browseKCFinder('txtImage','image'); return FALSE;" />
+						</label>
+						<label class="item">
+							<p class="label">Ảnh galary:</p>
+							<input type="text" name="data[images]" value="<?php echo isset($_post['images'])?$_post['images']:''; ?>" class="txtText" id="txtImage2" />
+							<input type="button" value="Chọn ảnh" class="btnButton" onclick="browseKCFinder('txtImage2','image'); return FALSE;" />
 						</label>
 						<label class="item">
 							<p class="label">Mô tả:</p>
@@ -108,19 +148,6 @@
 						</section>	<!--end container-->							
 					</section><!--end block-->
 					
-					<section class="block">
-						<header>Khác</header>
-						<section class="container">
-							<label class="item">
-								<p class="label">Nguồn:</p>
-								<input type="text" name = "data[source]" value="<?php echo common_valuepost(isset($_post['source'])?$_post['source']:''); ?>" class="txtText" />
-							</label>
-							<label class="item">
-								<p class="label">Url tùy biến:</p>
-								<input type="text" name = "data[route]" value="<?php echo common_valuepost(isset($_post['route'])?$_post['route']:''); ?>" class="txtText" />
-							</label>
-						</section>	<!--end container-->							
-					</section><!--end block-->
 				</aside><!--end side-->
 			</form>
 		</section> <!--end form-->
